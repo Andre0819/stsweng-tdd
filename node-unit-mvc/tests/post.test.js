@@ -76,7 +76,88 @@ describe('Post controller', () => {
     });
 
     describe('update', () => {
-        
+        var updatePostStub;
+    
+        beforeEach(() => {
+            // Before every test case, setup stub and request object
+            res = {
+                json: sinon.spy(),
+                status: sinon.stub().returns({ end: sinon.spy() })
+            };
+    
+            // Stub the updatePost method
+            updatePostStub = sinon.stub(PostModel, 'updatePost');
+        });
+    
+        afterEach(() => {
+            // After each test case, restore stub
+            updatePostStub.restore();
+        });
+    
+        it('should return the updated post object', () => {
+            // Arrange
+            const postId = '507asdghajsdhjgasd'; // ID of the post to be updated
+            const updatedPostData = {
+                title: 'Updated title',
+                content: 'Updated content',
+                author: 'updatedAuthor',
+                date: Date.now()
+            };
+            const updatedResult = {
+                _id: postId,
+                ...updatedPostData
+            };
+    
+            // Stub the updatePost method to yield the updated result
+            updatePostStub.withArgs(postId, updatedPostData).yields(null, updatedResult);
+    
+            // Set up the request object
+            req = {
+                params: {
+                    id: postId
+                },
+                body: updatedPostData
+            };
+    
+            // Act
+            PostController.update(req, res);
+    
+            // Assert
+            sinon.assert.calledWith(PostModel.updatePost, postId, updatedPostData);
+            sinon.assert.calledWith(res.json, sinon.match(updatedResult));
+        });
+    
+        // Error scenario
+        it('should return status 500 on server error', () => {
+            // Arrange
+            const postId = '507asdghajsdhjgasd'; // ID of the post to be updated
+            const updatedPostData = {
+                title: 'Updated title',
+                content: 'Updated content',
+                author: 'updatedAuthor',
+                date: Date.now()
+            };
+            const error = new Error('Some error occurred while updating post.');
+    
+            // Stub the updatePost method to yield an error
+            updatePostStub.withArgs(postId, updatedPostData).yields(error);
+    
+            // Set up the request object
+            req = {
+                params: {
+                    id: postId
+                },
+                body: updatedPostData
+            };
+    
+            // Act
+            PostController.update(req, res);
+    
+            // Assert
+            sinon.assert.calledWith(PostModel.updatePost, postId, updatedPostData);
+            sinon.assert.calledWith(res.status, 500);
+            sinon.assert.calledOnce(res.status(500).end);
+        });
     });
     
 
