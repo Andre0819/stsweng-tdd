@@ -26,3 +26,12 @@ exports.updatePost = (postId, updatedData, next) => {
     return next(null, post);
     });
 };
+
+exports.findPost = (postId, next) => {
+    Post.findById(postId, (err, post) => {
+        if (err) {
+            return next(err);
+        }
+        return next(null, post);
+    });
+}
