@@ -25,7 +25,9 @@ It will then ask you what Driver and Version, by default, Node.js is already sel
 
 Paste the connection URL in [`models/connection.js`](../models/connection.js).
 ```JavaScript
-const databaseURL = 'mongodb+srv://admin:<password>@ccapdev-test-fmitn.mongodb.net/test?retryWrites=true&w=majority';
+// const databaseURL = 'mongodb+srv://admin:<password>@ccapdev-test-fmitn.mongodb.net/test?retryWrites=true&w=majority';
+const databaseURL = 'mongodb+srv://andreaquino:DkVlWZhgyDTyCbwG@tdd-cluster.izwza7t.mongodb.net/?retryWrites=true&w=majority';
+
 ```
 
 The default URL is set to a `test` database. Replace it with `logindb` or the name of your database. Make sure to replace the `<password>` with the actual password of your user.
