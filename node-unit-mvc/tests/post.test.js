@@ -162,6 +162,7 @@ describe('Post controller', () => {
     
 
     describe('findPost', () => {
+        // failing test case
         var findPostStub;
 
         beforeEach(() => {
